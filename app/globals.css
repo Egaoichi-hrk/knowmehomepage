@@ -3,14 +3,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --teal-primary: #36A89A;
+  --teal-light: #D1FFF6;
+  --teal-dark: #2a8a7d;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -22,5 +19,390 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+  min-height: 100vh;
+}
+
+/* スクロール連動背景 */
+.scroll-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.scroll-shape {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--teal-light);
+  opacity: 0.5;
+  width: 160px;
+  height: 160px;
+  will-change: transform;
+}
+
+.shape1 { top: 10%; left: 15%; }
+.shape2 { top: 30%; right: 20%; }
+.shape3 { bottom: 20%; left: 25%; }
+.shape4 { bottom: 10%; right: 10%; }
+.shape5 { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.shape6 { top: 20%; right: 25%; width: 160px; height: 160px; }
+.shape7 { bottom: 30%; left: 40%; width: 140px; height: 140px; }
+
+/* (per-character fade removed) */
+
+/* 必要に応じて他のプレースホルダー用スタイルを追加 */
+.cta-button:hover {
+  background: #2a8a7d;
+  transform: translateY(-2px);
+}
+
+.cta-button:active {
+  transform: translateY(0);
+}
+
+/* 機能カードのホバーエフェクト */
+.feature-card {
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* スムーズスクロール */
+html {
+  scroll-behavior: smooth;
+}
+
+/* フォーム入力のフォーカススタイル */
+input:focus,
+textarea:focus,
+select:focus {
+  box-shadow: 0 0 0 3px rgba(54, 168, 154, 0.1);
+  border-color: #36A89A;
+}
+
+/* バラバラ文字フェードアニメーション */
+.fade-char {
+  display: inline-block;
+  opacity: 0;
+  animation: fade 2s infinite;
+}
+
+@keyframes fade {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+/* スマートフォンフレーム */
+.phone-frame {
+  position: relative;
+  width: 100%;
+  max-width: 200px;
+  height: 400px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-radius: 28px;
+  padding: 6px;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.1),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+.phone-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.phone-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 16px;
+  background: #000;
+  border-radius: 0 0 14px 14px;
+  z-index: 10;
+}
+
+.phone-content {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* テキストオーバーレイ */
+.text-overlay {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 22px 22px 0 0;
+  pointer-events: none;
+  z-index: 20;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: max-content;
+  min-width: 200px;
+  max-width: 500px;
+  overflow: visible;
+}
+
+.text-overlay-content {
+  padding: 1.5rem 1.5rem 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: fit-content;
+  width: 100%;
+}
+
+.text-overlay h1,
+.text-overlay p,
+.text-overlay button {
+  pointer-events: auto;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+  .floating-shape {
+    filter: blur(30px);
+  }
+  
+  /* use same naming as the shapes in markup (no hyphen) */
+  .shape1,
+  .shape2,
+  .shape3,
+  .shape4,
+  .shape5,
+  .shape6,
+  .shape7 {
+    width: 100px;
+    height: 100px;
+  }
+
+  /* extra shapes slightly smaller to keep balance */
+  .shape6,
+  .shape7 {
+    width: 80px;
+    height: 80px;
+  }
+
+  .phone-frame {
+    width: 100%;
+    max-width: 160px;
+    height: 320px;
+    border-radius: 28px;
+    padding: 6px;
+  }
+
+  .phone-screen {
+    border-radius: 22px;
+  }
+
+  .phone-screen::before {
+    width: 80px;
+    height: 16px;
+    border-radius: 0 0 14px 14px;
+  }
+}
+
+/* パーティクルエフェクト */
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(54, 168, 154, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  box-shadow: 0 0 10px rgba(54, 168, 154, 0.8);
+  animation: particleFloat 20s infinite ease-in-out;
+}
+
+.particle-1 {
+  top: 10%;
+  left: 20%;
+  animation-delay: 0s;
+  animation-duration: 15s;
+}
+
+.particle-2 {
+  top: 30%;
+  left: 60%;
+  animation-delay: 2s;
+  animation-duration: 18s;
+}
+
+.particle-3 {
+  top: 50%;
+  left: 10%;
+  animation-delay: 4s;
+  animation-duration: 22s;
+}
+
+.particle-4 {
+  top: 70%;
+  left: 80%;
+  animation-delay: 1s;
+  animation-duration: 16s;
+}
+
+.particle-5 {
+  top: 20%;
+  left: 40%;
+  animation-delay: 3s;
+  animation-duration: 20s;
+}
+
+.particle-6 {
+  top: 60%;
+  left: 30%;
+  animation-delay: 5s;
+  animation-duration: 19s;
+}
+
+.particle-7 {
+  top: 40%;
+  left: 70%;
+  animation-delay: 1.5s;
+  animation-duration: 17s;
+}
+
+.particle-8 {
+  top: 80%;
+  left: 50%;
+  animation-delay: 3.5s;
+  animation-duration: 21s;
+}
+
+.particle-9 {
+  top: 15%;
+  left: 90%;
+  animation-delay: 2.5s;
+  animation-duration: 18s;
+}
+
+.particle-10 {
+  top: 90%;
+  left: 25%;
+  animation-delay: 4.5s;
+  animation-duration: 16s;
+}
+
+/* ヒーローセクション専用パーティクル */
+.hero-particle-1 {
+  top: 15%;
+  left: 15%;
+  animation-delay: 0s;
+  animation-duration: 12s;
+}
+
+.hero-particle-2 {
+  top: 35%;
+  left: 65%;
+  animation-delay: 2s;
+  animation-duration: 14s;
+}
+
+.hero-particle-3 {
+  top: 55%;
+  left: 25%;
+  animation-delay: 4s;
+  animation-duration: 16s;
+}
+
+.hero-particle-4 {
+  top: 75%;
+  left: 75%;
+  animation-delay: 1s;
+  animation-duration: 13s;
+}
+
+.hero-particle-5 {
+  top: 25%;
+  left: 45%;
+  animation-delay: 3s;
+  animation-duration: 15s;
+}
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.6;
+  }
+  25% {
+    transform: translate(30px, -50px) scale(1.2);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-20px, 40px) scale(0.8);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translate(40px, 20px) scale(1.1);
+    opacity: 0.9;
+  }
+}
+
+/* 波のような動き */
+.wave {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at center, rgba(54, 168, 154, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: waveMove 20s infinite ease-in-out;
+}
+
+.wave-1 {
+  top: -50%;
+  left: -50%;
+  animation-delay: 0s;
+  animation-duration: 25s;
+}
+
+.wave-2 {
+  top: -30%;
+  right: -50%;
+  animation-delay: 8s;
+  animation-duration: 30s;
+}
+
+.wave-3 {
+  bottom: -50%;
+  left: -30%;
+  animation-delay: 15s;
+  animation-duration: 35s;
+}
+
+@keyframes waveMove {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 0.3;
+  }
+  33% {
+    transform: translate(10%, -10%) rotate(5deg) scale(1.1);
+    opacity: 0.5;
+  }
+  66% {
+    transform: translate(-10%, 10%) rotate(-5deg) scale(0.9);
+    opacity: 0.4;
+  }
 }
